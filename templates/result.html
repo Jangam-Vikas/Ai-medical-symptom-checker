@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Report</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body{
+            background:#f4f7fb;
+            font-family:Arial,Helvetica,sans-serif;
+        }
+
+        .container{
+            width:80%;
+            max-width:900px;
+            margin:40px auto;
+            background:white;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 0 15px rgba(0,0,0,0.15);
+        }
+
+        h1{
+            color:#0d6efd;
+            text-align:center;
+        }
+
+        table{
+            width:100%;
+            margin-top:20px;
+            border-collapse:collapse;
+        }
+
+        td{
+            padding:10px;
+            border-bottom:1px solid #ddd;
+        }
+
+        .result-box{
+            margin-top:30px;
+            padding:20px;
+            background:#f8f9fa;
+            border-left:5px solid #0d6efd;
+            border-radius:8px;
+        }
+
+        #typing{
+            white-space:pre-wrap;
+            line-height:1.8;
+            font-size:17px;
+            min-height:250px;
+        }
+
+        #typing::after{
+            content:"|";
+            animation:blink .8s infinite;
+            color:#0d6efd;
+            font-weight:bold;
+        }
+
+        @keyframes blink{
+            50%{
+                opacity:0;
+            }
+        }
+
+        .btn{
+            margin-top:25px;
+            padding:12px 20px;
+            background:#0d6efd;
+            color:white;
+            text-decoration:none;
+            border-radius:8px;
+            display:inline-block;
+        }
+
+        .btn:hover{
+            background:#084298;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🩺 AI Medical Symptom Checker</h1>
+
+<h2>Patient Details</h2>
+
+<table>
+
+<tr>
+<td><b>Name</b></td>
+<td>{{ patient.name }}</td>
+</tr>
+
+<tr>
+<td><b>Age</b></td>
+<td>{{ patient.age }}</td>
+</tr>
+
+<tr>
+<td><b>Gender</b></td>
+<td>{{ patient.gender }}</td>
+</tr>
+
+<tr>
+<td><b>Height</b></td>
+<td>{{ patient.height }} cm</td>
+</tr>
+
+<tr>
+<td><b>Weight</b></td>
+<td>{{ patient.weight }} kg</td>
+</tr>
+
+<tr>
+<td><b>Symptoms</b></td>
+<td>{{ patient.symptoms }}</td>
+</tr>
+
+<tr>
+<td><b>Duration</b></td>
+<td>{{ patient.duration }}</td>
+</tr>
+
+<tr>
+<td><b>Temperature</b></td>
+<td>{{ patient.temperature }} °C</td>
+</tr>
+
+</table>
+
+<div class="result-box">
+
+<h2>🤖 AI Medical Analysis</h2>
+
+<pre id="typing"></pre>
+
+</div>
+
+<a href="/" class="btn">Check Another Patient</a>
+
+</div>
+
+<script>
+
+const text = {{ result|tojson }};
+
+const output = document.getElementById("typing");
+
+let index = 0;
+
+const speed = 15;
+
+function typeWriter(){
+
+    if(index < text.length){
+
+        output.textContent += text.charAt(index);
+
+        index++;
+
+        output.scrollIntoView(false);
+
+        setTimeout(typeWriter, speed);
+
+    }
+
+}
+
+window.onload = function(){
+
+    output.textContent = "";
+
+    typeWriter();
+
+}
+
+</script>
+
+</body>
+
+</html>
